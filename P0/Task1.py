@@ -18,3 +18,15 @@ How many different telephone numbers are there in the records?
 Print a message:
 "There are <count> different telephone numbers in the records."
 """
+
+phone_nums = set()
+
+for i in range(len(texts)):
+    phone_nums.add(texts[i][0])
+    phone_nums.add(texts[i][1])
+
+for i in range(len(calls)):
+    phone_nums.add(calls[i][0])
+    phone_nums.add(calls[i][1])
+
+print("There are {} different telephone numbers in the records.".format(len(phone_nums)))
