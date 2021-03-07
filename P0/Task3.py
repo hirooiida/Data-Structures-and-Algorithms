@@ -53,7 +53,8 @@ def isCalledFromBangalore(phone_number):
 
 def getPrefix(phone_number):
     if phone_number.startswith('('):
-        return phone_number[1:4]
+        ret_number = phone_number.lstrip('(').split(')')
+        return ret_number[0]
     else:
         return phone_number[0:4]
 
@@ -78,5 +79,5 @@ for call in calls:
         if isCalledFromBangalore(call[1]):
             rx_blr_num += 1
 
-percentage = int(100*rx_blr_num/tx_blr_num)
-print("{} percent of calls from fixed lines in Bangalore are callsto other fixed lines in Bangalore.".format(percentage))
+percentage = 100*rx_blr_num/tx_blr_num
+print("{} percent of calls from fixed lines in Bangalore are callsto other fixed lines in Bangalore.".format(round(percentage,2)))
