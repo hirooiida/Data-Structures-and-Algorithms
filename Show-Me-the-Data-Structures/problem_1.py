@@ -111,34 +111,87 @@ class LRU_Cache(object):
             if self.history.num_elements > self.capacity:
                 rm_key = self.history.dequeue()
                 del self.dictionary[rm_key]
+        elif key in self.dictionary:
+            self.dictionary[key] = value
+            self.history.to_tail(key)
+        else:
+            pass
 
     def __repr__(self):
-        s = "Dictionary " + str(self.dictionary) + "\n"
+        s = "\n==== Cache content ====\n"
+        s += "Dictionary " + str(self.dictionary) + "\n"
         s += str(self.history) + "\n"
         return s
 
 our_cache = LRU_Cache(5)
 
-print("\n---- Test 1: Get from empty ----")
-print("Pass" if (our_cache.get(1) == -1) else "Fail")
-print("Pass" if (our_cache.get(3) == -1) else "Fail")
+print("\n==== Test cases ====")
+print("--- Get from empty ---")
+print("our_cache.get(1):   {}".format(our_cache.get(1)))
+# -1
+print("our_cache.get(3):   {}".format(our_cache.get(3)))
+# -1
 
-print("\n---- Test 2: Set and Get ----")
-our_cache.set(1,1)
-our_cache.set(2,2)
-our_cache.set(3,3)
+print("\n--- Set and get ---")
+print("our_cache.set(1,1): {}".format(our_cache.set(1,1)))
+# None
+print("our_cache.set(2,2): {}".format(our_cache.set(2,2)))
+# None
+print("our_cache.set(3,3): {}".format(our_cache.set(3,3)))
+# None
+print("our_cache.set(4,4): {}".format(our_cache.set(4,4)))
+# None
+print("our_cache.set(5,5): {}".format(our_cache.set(5,5)))
+# None
 
-print("Pass" if (our_cache.get(3) == 3) else "Fail")
-print("Pass" if (our_cache.get(1) == 1) else "Fail")
-print("Pass" if (our_cache.get(2) == 2) else "Fail")
-print("Pass" if (our_cache.get(4) == -1) else "Fail")
+print("our_cache.get(5):   {}".format(our_cache.get(5)))
+# 5
+print("our_cache.get(1):   {}".format(our_cache.get(1)))
+# 1
+print("our_cache.get(3):   {}".format(our_cache.get(3)))
+# 3
+print("our_cache.get(4):   {}".format(our_cache.get(4)))
+# 4
+print("our_cache.get(2):   {}".format(our_cache.get(2)))
+# 2
+print("our_cache.get(7):   {}".format(our_cache.get(7)))
+# -1
 
-our_cache.set(4,4)
-our_cache.set(5,5)
-our_cache.set(6,6)
-our_cache.set(7,7)
+print("\n--- Over capacity ---")
+print("our_cache.set(6,6): {}".format(our_cache.set(6,6)))
+# None
+print("our_cache.set(7,7): {}".format(our_cache.set(7,7)))
+# None
+print("our_cache.set(8,8): {}".format(our_cache.set(8,8)))
+# None
 
-print("Pass" if (our_cache.get(3) == -1) else "Fail")
-print("Pass" if (our_cache.get(1) == -1) else "Fail")
-print("Pass" if (our_cache.get(4) == 4) else "Fail")
-print("Pass" if (our_cache.get(5) == 5) else "Fail")
+print("our_cache.get(1):   {}".format(our_cache.get(1)))
+# -1
+print("our_cache.get(2):   {}".format(our_cache.get(2)))
+# 2
+print("our_cache.get(3):   {}".format(our_cache.get(3)))
+# -1
+print("our_cache.get(4):   {}".format(our_cache.get(4)))
+# 4
+print("our_cache.get(5):   {}".format(our_cache.get(5)))
+# -1
+print("our_cache.get(6):   {}".format(our_cache.get(6)))
+# 6
+print("our_cache.get(7):   {}".format(our_cache.get(7)))
+# 7
+print("our_cache.get(8):   {}".format(our_cache.get(8)))
+# 8
+
+print("\n--- Set twice ---")
+print("our_cache.set(6,6): {}".format(our_cache.set(6,6)))
+# None
+print("our_cache.set(1,1): {}".format(our_cache.set(1,1)))
+# None
+print("our_cache.set(2,2): {}".format(our_cache.set(2,2)))
+# None
+print("our_cache.set(3,3): {}".format(our_cache.set(3,3)))
+# None
+print("our_cache.get(7):   {}".format(our_cache.get(7)))
+# -1
+print("our_cache.get(6):   {}".format(our_cache.get(6)))
+# 6
