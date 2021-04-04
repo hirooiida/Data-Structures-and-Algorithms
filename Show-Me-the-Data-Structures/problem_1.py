@@ -1,87 +1,115 @@
-class Container:
+class Node(object):
 
-    def __init__(self, value):
+    def __init__(self, key, value):
+        self.key = key
         self.value = value
-        self.age = 0
-
-    def get_value(self):
-        return self.value
-
-    def get_age(self):
-        return self.age
-
-    def increase_age(self):
-        self.age += 1
-
-    def reset_age(self):
-        self.age = 0
+        self.prev = None
+        self.next = None
 
     def __repr__(self):
-        return f'Container({self.value}, {self.age})'
+        return f'Node({self.key},{self.value})'
+    
+    def __str__(self):
+        return f'Node({self.key},{self.value})'
 
+class HistoryQueue(object):
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.num_elements = 0
+    
+    def enqueue(self, key, value):
+        new_node = Node(key, value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = self.head
+        else:
+            self.tail.next = new_node
+            self.tail.next.prev = self.tail
+            self.tail = self.tail.next
+        self.num_elements += 1
+
+    def dequeue(self):
+        if self.is_empty():
+            print("There is nothing to dequeue")
+        else:
+            self.head = self.head.next
+            if self.head != None:
+                self.head.prev = None
+            self.num_elements -= 1
+    
+    def to_tail(self, key):
+        current_node = self.head
+        while current_node:
+            if current_node.key == key:
+                current_node.prev.next = current_node.next
+                current_node.next.prev = current_node.prev
+                current_node.prev = self.tail
+                self.tail.next = current_node
+                self.tail = self.tail.next
+                self.tail.next = None
+                break
+
+            current_node = current_node.next
+
+    def size(self):
+        return self.num_elements
+    
+    def is_empty(self):
+        return self.num_elements == 0
+
+    def __repr__(self):
+        s = "<- older   newer ->\n"
+        if not self.is_empty():
+            current_node = self.head
+            while current_node:
+                s += "Node({},{}) ".format(current_node.key,current_node.value)
+                current_node = current_node.next
+            return s
+        else:
+            return s + "history is empty"
 
 class LRU_Cache(object):
 
     def __init__(self, capacity):
-        self.capacity = capacity
-        self.data_dict = dict()
+        # Initialize class variables
+        pass
 
     def get(self, key):
         # Retrieve item from provided key. Return -1 if nonexistent. 
-        if key in self.data_dict:
-            self.data_dict[key].increase_age()
-            return key
-        else:
-            return -1
+        pass
 
     def set(self, key, value):
         # Set the value if the key is not present in the cache. If the cache is at capacity remove the oldest item. 
-        if key not in self.data_dict and len(self.data_dict) < self.capacity:
-            self.data_dict[key] = Container(value)
-            self.data_dict[key].increase_age()
-        elif key in self.data_dict:
-            self.data_dict[key].increase_age()
-        else:
-            least_value = self._find_least()
-            del self.data_dict[least_value]
-            self.data_dict[key] = Container(value)
-            self.data_dict[key].increase_age()
+        pass
 
-    def _find_least(self):
-        least_val = -1
-        lowest_age = -1
-        for value in self.data_dict.values():
-            if lowest_age < 0 or value.age < lowest_age:
-                lowest_age = value.age
-                least_val = value.value
-        return value.value
+our_cache = LRU_Cache(5)
 
+history = HistoryQueue()
+history.enqueue(1,1)
+print(history)
 
-print("----------------------")
-our_cache = LRU_Cache(2)
-print(our_cache.data_dict)
+history.enqueue(2,2)
+print(history)
 
-print("----------------------")
-print("set(1,1)")
-our_cache.set(1,1)
-print(our_cache.data_dict)
+history.dequeue()
+print(history)
 
-print("----------------------")
-print("set(2,2)")
-our_cache.set(2,2)
-print(our_cache.data_dict)
+history.enqueue(3,3)
+history.enqueue(4,4)
+print(history)
 
-print("----------------------")
-print("set(3,3)")
-our_cache.set(3,3)
-print(our_cache.data_dict)
+history.to_tail(3)
+print(history)
 
-print("----------------------")
-print("set(2,2)")
-our_cache.set(2,2)
-print(our_cache.data_dict)
+history.dequeue()
+print(history)
 
-print("----------------------")
-print("get(2)")
-our_cache.get(2)
-print(our_cache.data_dict)
+history.dequeue()
+print(history)
+
+history.dequeue()
+print(history)
+
+history.dequeue()
