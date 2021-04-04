@@ -29,6 +29,7 @@ class HistoryQueue(object):
             self.tail.next.prev = self.tail
             self.tail = self.tail.next
         self.num_elements += 1
+        return new_node
 
     def dequeue(self):
         if self.is_empty():
@@ -42,33 +43,25 @@ class HistoryQueue(object):
             self.num_elements -= 1
             return rm_key
     
-    def to_tail(self, key):
-        current_node = self.head
+    def to_tail(self, node):
 
-        if self.tail.key == key:
-            return
-        
-        if self.head.key == key:
+        if node.next == None:
+            #print(f'Node({node.key},{node.value}) is Tail')
+            pass
+        elif self.head == node:
             self.head = self.head.next
-            current_node.next.prev = None
-            current_node.next = None
-            current_node.prev = self.tail
-            self.tail.next = current_node
+            node.next.prev = None
+            node.next = None
+            node.prev = self.tail
+            self.tail.next = node
             self.tail = self.tail.next
-            return
-
-        while current_node:
-            if current_node.key == key:
-                current_node.prev.next = current_node.next
-                current_node.next.prev = current_node.prev
-                current_node.prev = self.tail
-                self.tail.next = current_node
-                self.tail = self.tail.next
-                self.tail.next = None
-                break
-
-            current_node = current_node.next
-        return
+        else:
+            node.prev.next = node.next
+            node.next.prev = node.prev
+            node.prev = self.tail
+            self.tail.next = node
+            self.tail = self.tail.next
+            self.tail.next = None
 
     def size(self):
         return self.num_elements
@@ -97,23 +90,23 @@ class LRU_Cache(object):
     def get(self, key):
         # Retrieve item from provided key. Return -1 if nonexistent. 
         if key in self.dictionary:
-            self.history.to_tail(key)
-            return self.dictionary[key]
+            node = self.dictionary[key]
+            self.history.to_tail(self.dictionary[key])
+            return self.dictionary[key].value
         else:
             return -1
 
     def set(self, key, value):
         # Set the value if the key is not present in the cache. If the cache is at capacity remove the oldest item. 
         if key not in self.dictionary:
-            self.dictionary[key] = value
-            self.history.enqueue(key, value)
-
+            new_node = self.history.enqueue(key, value)
+            self.dictionary[key] = new_node
+            
             if self.history.num_elements > self.capacity:
                 rm_key = self.history.dequeue()
                 del self.dictionary[rm_key]
         elif key in self.dictionary:
-            self.dictionary[key] = value
-            self.history.to_tail(key)
+            self.history.to_tail(self.dictionary[key])
         else:
             pass
 

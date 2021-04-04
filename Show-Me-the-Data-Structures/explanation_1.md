@@ -1,11 +1,7 @@
 # Reason
-```dict``` data type is used for cache content to get ```get()``` function in O(n) efficiency.
-
-Queue is used for cache history to remove the least recently used node when the capacity is full. The queue should be capable to update the order of its elements, a doubly linked list is used for the node and a function (```to_tail()```) is added as a member function.
+```dict``` type is used to make data access O(1). ```Queue``` is used to delete the least recently used emelent. A doubly linked list is used for the value of the ```dict``` to enable to update the queue element.
 
 # Efficiency
-Time efficiency: O(n)
+Time complexity is O(1) for accessing the value of ```dict``` with no iteration.
 
-Space efficiency: O(n)
-
-```to_tail(key)``` function requires ```n-2``` steps in the worst case if the node with the key is at just before the ```tail```, which makes time efficiency O(n). 
+Space efficiency is O(n) because data types of ```dict``` and ```HistoryQueue``` which is used to store the used history are linearly dependent on the data size.
