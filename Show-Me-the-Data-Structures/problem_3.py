@@ -15,11 +15,18 @@ def huffman_encoding(data):
     encoded_data = ""
     frequency = {}
 
+    if data == "":
+        return "0", Node(None,"")
+
     for c in data:
         if c not in frequency:
             frequency[c] = 1
         elif c in frequency:
             frequency[c] += 1
+
+    if len(frequency) < 2:
+        # TODO(hiroo)
+        pass
     
     sorted_frequency = sorted(frequency.items(), key=lambda x:x[1])
     node_list = build_node_list(sorted_frequency)
@@ -72,41 +79,70 @@ def generate_huffman_code_dict(node: Node, code=""):
 
     return translation_dict
 
-
 def huffman_decoding(data,tree):
-    pass
+    decoded_data = ""
 
+    translation_dict = generate_huffman_code_dict(tree)
+    reversed_dict = get_reversed_dict(translation_dict)
+
+    key = ""
+    for char in data:
+        key += char
+        if key in reversed_dict:
+            decoded_data += reversed_dict[key]
+            key = ""
+    
+    return decoded_data
+
+
+def get_reversed_dict(dictionary):
+    return {v: k for k, v in dictionary.items()}
 
 if __name__ == "__main__":
     codes = {}
 
+    '''
     print("\n==== TEST ====")
     data = "AAAAAAABBBCCCCCCCDDEEEEEE"
 
-    print("--- Encoded data ---")
-    print(huffman_encoding(data))
-    
-    sorted_list = [('D', 2), ('C', 3), ('B', 7), ('A', 10)]
-    sorted_nodes = build_node_list(sorted_list)
-    print("\n--- Sorted nodes ---")
-    print(sorted_nodes)
-    print("\n--- Insert node ---")
-    print(insert_node(Node('E',5), sorted_nodes))
+    print("--- Encode data ---")
+    encoded_data, tree = huffman_encoding(data)
+    print(data)
+    print(encoded_data)
 
-    
-    print("\n--- Build tree ---")
-    sample_ls = [Node("D",2), Node("B",3), Node("E",6), Node("A",7), Node("C",7)]
-    root = build_tree(sample_ls)
-    print("root: {}".format(root))
-    print("root.left: {}".format(root.left))
-    print("root.left.right: {}".format(root.left.right))
-    print("root.left.left.right: {}".format(root.left.left.right))
-    print("root.right: {}".format(root.right))
-    print("root.right.right: {}".format(root.right.right))
-    print("root.right.right.right: {}".format(root.right.right.right))
-    print("root.right.right.left: {}".format(root.right.right.left))
+    print("--- Decode data ---")
+    decoded_data = huffman_decoding(encoded_data, tree)
+    print(decoded_data)
+    '''
 
-    print("\n--- Generate table ---")
-    table = generate_huffman_code_dict(root)
-    print(table)
+    print("--- UDACITY sample 1 ---")
+    a_great_sentence = "The bird is the word"
 
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    print("--- UDACITY sample 2 ---")
+    a_great_sentence = ""
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
