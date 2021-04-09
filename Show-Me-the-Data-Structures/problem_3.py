@@ -16,7 +16,7 @@ def huffman_encoding(data):
     frequency = {}
 
     if data == "":
-        return "0", Node(None,"")
+        return "0", Node(None,None)
 
     for c in data:
         if c not in frequency:
@@ -25,8 +25,7 @@ def huffman_encoding(data):
             frequency[c] += 1
 
     if len(frequency) < 2:
-        # TODO(hiroo)
-        pass
+        return "0" * frequency[data[0]], Node(data[0],frequency[data[0]])
     
     sorted_frequency = sorted(frequency.items(), key=lambda x:x[1])
     node_list = build_node_list(sorted_frequency)
@@ -71,7 +70,10 @@ def insert_node(node: Node, node_list: list):
 def generate_huffman_code_dict(node: Node, code=""):
     translation_dict = {}
     if not (node.left or node.right):
-        translation_dict[node.char] = code
+        if code == "":
+            translation_dict[node.char] = "0"
+        else:
+            translation_dict[node.char] = code
         return translation_dict
 
     translation_dict.update(generate_huffman_code_dict(node.left, code + "0"))
@@ -81,6 +83,9 @@ def generate_huffman_code_dict(node: Node, code=""):
 
 def huffman_decoding(data,tree):
     decoded_data = ""
+
+    if tree.freq == None:
+        return ""
 
     translation_dict = generate_huffman_code_dict(tree)
     reversed_dict = get_reversed_dict(translation_dict)
@@ -130,9 +135,25 @@ if __name__ == "__main__":
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the encoded data is: {}\n".format(decoded_data))
-
+    
     print("--- UDACITY sample 2 ---")
     a_great_sentence = ""
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+    
+    print("--- UDACITY sample 3 ---")
+    a_great_sentence = "bbb"
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
     print ("The content of the data is: {}\n".format(a_great_sentence))
