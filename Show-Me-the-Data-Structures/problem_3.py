@@ -120,7 +120,7 @@ if __name__ == "__main__":
     print(decoded_data)
     '''
 
-    print("--- UDACITY sample 1 ---")
+    print("--- Test 1 ---")
     a_great_sentence = "The bird is the word"
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the encoded data is: {}\n".format(decoded_data))
     
-    print("--- UDACITY sample 2 ---")
+    print("--- Test 2 ---")
     a_great_sentence = ""
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the encoded data is: {}\n".format(decoded_data))
     
-    print("--- UDACITY sample 3 ---")
+    print("--- Test 3 ---")
     a_great_sentence = "bbb"
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
