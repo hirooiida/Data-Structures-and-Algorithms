@@ -46,7 +46,6 @@ class HistoryQueue(object):
     def to_tail(self, node):
 
         if node.next == None:
-            #print(f'Node({node.key},{node.value}) is Tail')
             pass
         elif self.head == node:
             self.head = self.head.next
