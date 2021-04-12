@@ -18,10 +18,10 @@ def find_files(suffix, path):
     """
 
     if suffix == "":
-        return None
+        return []
 
-    if path == "":
-        return None
+    if not os.path.exists(path):
+        return []
 
     output = list()
 
@@ -41,4 +41,6 @@ print(find_files(".c", "./testdir"))
 print(find_files(".h", "./testdir"))
 #['./testdir/subdir3/subsubdir1/b.h', './testdir/subdir5/a.h', './testdir/t1.h', './testdir/subdir1/a.h']
 print(find_files(".cpp", "./testdir"))
+# []
+print(find_files(".c", "./test"))
 # []

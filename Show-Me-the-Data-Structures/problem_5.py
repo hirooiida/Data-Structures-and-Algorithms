@@ -6,7 +6,7 @@ class BlockChain:
     def __init__(self):
         self.tail = None
 
-    def append(self, data):
+    def append(self, data=""):
         if not data:
             print("Error: empty data cannot be appended")
             return
@@ -58,10 +58,10 @@ bc.print()
 # No data
 
 print("\n---- TEST 2: Append empty data ----")
-bc.append("")
+bc.append()
 bc.print()
 # Error: empty data cannot be appended
-# Nodata
+# No data
 
 print("\n---- TEST 3: Append data ----")
 bc.append("First data")

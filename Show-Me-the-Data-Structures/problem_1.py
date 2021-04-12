@@ -81,10 +81,18 @@ class HistoryQueue(object):
 
 class LRU_Cache(object):
 
-    def __init__(self, capacity):
+    def __init__(self, capacity=5):
         self.history = HistoryQueue()
         self.dictionary = dict()
-        self.capacity = capacity
+        if type(capacity) is int:
+            if capacity < 1:
+                print("Size of capacity needs to be more than 1. Default 5 is set.")
+                self.capacity = 5
+            else:
+                self.capacity = capacity
+        else:
+            print("Argument needs to be int. Default 5 is used.")
+            self.capacity = 5
 
     def get(self, key):
         # Retrieve item from provided key. Return -1 if nonexistent. 
@@ -187,3 +195,11 @@ print("our_cache.get(7):   {}".format(our_cache.get(7)))
 # -1
 print("our_cache.get(6):   {}".format(our_cache.get(6)))
 # 6
+
+print("\n--- Negative capacity ---")
+our_cache = LRU_Cache(-1)
+# Size of capacity needs to be more than 1. Default 5 is set.
+
+print("\n--- Wrong capacity input ---")
+our_cache = LRU_Cache("alot")
+# Argument needs to be int. Default 5 is used.

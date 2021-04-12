@@ -6,7 +6,6 @@ class Node:
     def __repr__(self):
         return str(self.value)
 
-
 class LinkedList:
     def __init__(self):
         self.head = None
@@ -80,7 +79,6 @@ def intersection(llist_1, llist_2):
     
     return output
 
-
 # Test case 1
 
 linked_list_1 = LinkedList()
@@ -137,3 +135,41 @@ print (union(linked_list_5,linked_list_6))
 # 1 ->
 print (intersection(linked_list_5,linked_list_6))
 # 1 ->
+
+# Test case 4
+
+linked_list_7 = LinkedList()
+linked_list_8 = LinkedList()
+
+element_1 = [1,1,1,1,1,1,1]
+element_2 = []
+
+for i in element_1:
+    linked_list_7.append(i)
+
+for i in element_2:
+    linked_list_8.append(i)
+
+print (union(linked_list_7,linked_list_8))
+# 1 ->
+print (intersection(linked_list_7,linked_list_8))
+# (Nothing)
+
+# Test case 5
+
+linked_list_9 = LinkedList()
+linked_list_0 = LinkedList()
+
+element_1 = []
+element_2 = []
+
+for i in element_1:
+    linked_list_9.append(i)
+
+for i in element_2:
+    linked_list_0.append(i)
+
+print (union(linked_list_9,linked_list_0))
+# (Nothing)
+print (intersection(linked_list_9,linked_list_0))
+# (Nothing)
